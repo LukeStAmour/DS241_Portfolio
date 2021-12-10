@@ -1,0 +1,173 @@
+---
+title: "Lab 04 - La Quinta is Spanish for next to Denny's, Pt. 1"
+author: "Luke St. Amour"
+date: "10/8/2021"
+output:
+  html_document:
+    df_print: paged
+---
+
+### Load packages and data
+
+```{r load-packages, message = FALSE}
+library(tidyverse) 
+library(dsbox) 
+```
+
+```{r load-data, message = FALSE}
+states <- read_csv("datastates.csv")
+```
+
+### Exercise 1
+
+```{r}
+nrow(dennys)
+ncol(dennys)
+
+## The Dennys data set has 1643 rows and 6 columns. Each row in the dataset represents a different variable.
+## Those variables are: address, city, state, zip, longitude, latitude
+```
+
+### Exercise 2
+
+```{r}
+nrow(laquinta)
+ncol(laquinta)
+
+## The La Quinta data set has 909 rows and 6 columns
+```
+
+### Exercise 3
+```{r}
+## While all Dennys locations are within the US, La Quinta has locations in: Canada, Mexico, New Zealand, Honduras, Turkey, United Arab Emirates, Chile, and Colombia 
+```
+
+### Exercise 4
+```{r}
+## Using the longitude and latitudes, you could possibly filter out locations that do not fall between certain longitude and latitudes
+```
+
+### Exercise 5
+```{r}
+dennys %>%
+  filter(!(state %in% states$abbreviation))
+
+## no Dennys locations outside the US
+```
+
+
+### Exercise 6
+```{r}
+dennys %>%
+  mutate(country = "United States")
+```
+
+### Exercise 7
+```{r}
+## Canada, Mexico, New Zealand, Honduras, Turkey, United Arab Emirates, Chile, and Colombia 
+```
+
+### Exercise 8
+```{r}
+laquinta %>%
+  mutate(country = case_when (
+    state %in% state.abb ~ "United States",
+    state %in% c("ON", "BC") ~ "Canada",
+    state == "ANT" ~ "Columbia",
+    state == c("AG" ,"QR","CH","NL","VE","PU","SL")          ~ "Mexico",
+    state == "FM"           ~ "Honduras",
+
+    
+  ))
+```
+
+### ```{r}
+### laquinta <- laquinta %>%
+###   filter(country == "United States")
+### ```
+## Can not figure out why these lines do not work
+
+### Exercise 9
+```{r}
+## Deleware has the least amout of locations, having one. Due to Deleware's small Size, I am not surprised with this finding.
+```
+
+```{r}
+dennys %>%
+  count(state) %>%
+  inner_join(states, by = c("state" = "abbreviation"))
+```
+
+
+```{r}
+laquinta %>%
+  count(state) %>%
+  inner_join(states, by = c("state" = "abbreviation"))
+```
+
+### Exercise 10
+```{r}
+## California has the most Dennys locations per thousand square miles, and Texas has the most La Quinta locations
+```
+
+```{r}
+dennys <- dennys %>%
+  mutate(establishment = "Denny's")
+laquinta <- laquinta %>%
+  mutate(establishment = "La Quinta")
+```
+
+```{r}
+dn_lq <- bind_rows(dennys, laquinta)
+```
+
+```{r}
+ggplot(dn_lq, mapping = aes(x = longitude, y = latitude, color = establishment)) +
+  geom_point()
+```
+
+### Exercise 11
+```{r}
+dn_lq %>% filter(state=="NC") %>%
+ggplot(mapping = aes(x = longitude, y = latitude, color = establishment)) +
+  geom_point(alpha=.5)+
+  theme_minimal()+
+  ggtitle("Denny's and La Quint in North Carolina")
+
+## It does appear that the joke holds up, while not every dennys is close to a la quinta, most of the la quintas are relatively close to a dennys, with one or two exceptions
+```
+
+### Exercise 12
+```{r}
+dn_lq %>% filter(state=="TX") %>%
+ggplot(mapping = aes(x = longitude, y = latitude, color = establishment)) +
+  geom_point(alpha=.2)+
+  theme_minimal()+
+  ggtitle("Denny's and La Quint in Texas")
+
+## It deos not appear that the joke holds up here, there are a lot of laquintas that are not remotely close to a dennys location
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
