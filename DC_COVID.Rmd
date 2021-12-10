@@ -1,0 +1,38 @@
+---
+title: "Group 4 Covid Data"
+author: "Luke St. Amour"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+## Packages
+```{r}
+library(tidyverse)
+library(janitor)
+library(readxl)
+```
+
+## Load Data
+```{r}
+## Data Link: https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv
+df1 <- read.csv('COVID_DATA.csv')
+```
+
+## Filter to Just DC Data
+```{r}
+df2 <- df1 %>%
+  filter(state == "District of Columbia")
+```
+
+## Plot Data
+```{r}
+## This is where I had issues plotting the data in a line graph
+df2 %>%
+  ggplot(aes(x = date, y = cases)) +
+  ylim(0,5000) +
+  geom_line()
+    
+```
+
