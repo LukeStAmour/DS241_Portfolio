@@ -1,0 +1,91 @@
+---
+title: "Lab 04 - La Quinta is Spanish for next to Denny's, Pt. 2"
+author: "Luke St. Amour"
+date: "Insert date here"
+output: github_document
+---
+
+### Load packages and data
+
+```{r load-packages, message = FALSE}
+library(tidyverse) 
+library(dsbox) 
+```
+
+```{r load-data, message = FALSE}
+states <- read_csv("datastates.csv")
+```
+
+### Exercise 1
+
+```{r}
+dn_ak <- dennys %>%
+  filter(state == "AK")
+nrow(dn_ak)
+
+## There are 3 Denny's locations in Alaska
+```
+
+### Exercise 2
+
+```{r}
+lq_ak <- laquinta %>%
+  filter(state == "AK")
+nrow(lq_ak)
+
+## There are 2 La Quinta locations in Alaska
+```
+
+### Exercise 3
+```{r}
+dn_lq_ak <- full_join(dn_ak, lq_ak, by = "state")
+dn_lq_ak
+
+## There are 6 pairings between Dennys and La Quintas in Alaska
+```
+
+### Exercise 4
+```{r}
+## There are 13 variables and 6 observations, The variables are address.x, city.x, state, zip.x, longitude.x, latitude.x, establishment.x, address.y, city.y, zip.y, longitude.y, latitude.y, establishment.y
+```
+
+### Exercise 5
+```{r}
+## Mutate
+```
+
+```{r}
+haversine <- function(long1, lat1, long2, lat2, round = 3) {
+  # convert to radians
+  long1 = long1 * pi / 180
+  lat1  = lat1  * pi / 180
+  long2 = long2 * pi / 180
+  lat2  = lat2  * pi / 180
+  
+  R = 6371 # Earth mean radius in km
+  
+  a = sin((lat2 - lat1)/2)^2 + cos(lat1) * cos(lat2) * sin((long2 - long1)/2)^2
+  d = R * 2 * asin(sqrt(a))
+  
+  return( round(d,round) ) # distance in km
+}
+```
+
+### Exercise 6
+```{r}
+dn_lq_ak=dn_lq_ak %>% 
+  mutate(distance=
+           haversine(longitude.x, latitude.x, longitude.y, latitude.y, round = 4))
+```
+
+### Exercise 7
+```{r}
+dn_lq_ak_mindist <- dn_lq_ak %>%
+  group_by(address.x) %>%
+  summarise(closest = min(distance))
+```
+
+
+
+
+
