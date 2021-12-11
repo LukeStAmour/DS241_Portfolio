@@ -17,7 +17,7 @@ library(readxl)
 ## Load Data
 ```{r}
 ## Data Link: https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv
-df1 <- read.csv('COVID_DATA.csv')
+df1 <- read.csv("COVID_DATA.csv")
 ```
 
 ## Filter to Just DC Data
