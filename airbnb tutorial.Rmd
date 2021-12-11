@@ -1,0 +1,74 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+
+```{r}
+library(tidyverse)
+library(dsbox)
+```
+
+```{r}
+glimpse(edibnb)
+
+## each row in the edibnb dataset represents an individual airbnb listing
+```
+
+```{r}
+nrow(edibnb)
+
+## 12345 observations
+```
+
+```{r}
+names(edibnb)
+```
+
+```{r}
+ggplot(data = edibnb, mapping = aes(x = price)) +
+  geom_histogram() +
+  labs(
+    x = "Airbnb listing price, in £",
+    y = "Frequency",
+    title = "Distribution of Airbnb nightly rates in Edinburgh"
+  )
+```
+
+```{r}
+ggplot(data = edibnb, mapping = aes(x = price)) +
+  geom_histogram() +
+  facet_wrap(~neighbourhood) +
+  labs(
+    x = "Airbnb listing price, in £",
+    y = "Frequency",
+    title = "Distribution of Airbnb nightly rates in Edinburgh",
+    subtitle = "By neighbourhood"
+  )
+```
+
+```{r}
+ggplot(data = edibnb, mapping = aes(x = price)) +
+  geom_histogram(binwidth = 100) +
+  facet_wrap(~neighbourhood) +
+  labs(
+    x = "Airbnb listing price, in £",
+    y = "Frequency",
+    title = "Distribution of Airbnb nightly rates in Edinburgh"
+  )
+```
+
+```{r}
+ggplot(data = edibnb, mapping = aes(x = review_scores_rating)) +
+  geom_histogram() +
+  facet_wrap(~neighbourhood) +
+  labs(
+    x = "Average rating score of property",
+    y = "Frequency",
+    title = "Distribution of Airbnb rating scores in Edinburgh",
+    subtitle = "By neighbourhood"
+  )
+```
